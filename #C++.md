@@ -1213,11 +1213,11 @@ FLAG:
 //125
 ```
 
-5数组
+## 5数组
 
-5.2 一维数组
+### 5.1 一维数组
 
-5.1.1 一维数组的定义方式
+#### 5.1.1 一维数组的定义方式
 
 数据类型 数组名[数组长度 ]；
 
@@ -1227,17 +1227,590 @@ FLAG:
 
 数组特点：放在一块连续的存储空间内
 
+```c++
+#include <iostream>
+using namespace std;
+int main()
+{
+    //数据类型 数组名[数组长度 ]
+    int arr[5];
+    // 给数组里的元素进行赋值
+    //数组元素下标是从0开始索引的
+    arr[0] = 10;
+    arr[1] = 22;
+    arr[2] = 30;
+    arr[3] = 40;
+    arr[4] = 55;
+    //访问元素
+    cout << arr[0] << endl;
+    //访问所有元素
+    cout << arr[0] << endl;
+    cout << arr[1] << endl;
+    cout << arr[2] << endl;
+    cout << arr[3] << endl;
+    cout << arr[4] << endl;
+}
+```
+
+```c++
+#include <iostream>
+using namespace std;
+int main()
+{
+  
+    //数据类型 数组名[数组长度] = {值1， 值2 …};
+    //如果 初始化数据时 没有全部填写会用0来填补
+    int arr[3] = {10, 20, 30};
+    cout << arr[0] << endl;
+    for (int i = 0; i < 5; i++)
+        cout << arr[i] << endl; // 10 20 30 0 0 
+}
+```
+
+```c++
+#include <iostream>
+using namespace std;
+int main()
+{
+
+    //
+    int arr[] = {10, 20, 30, 40, 50, 60};
+    //定义数组的时候必须有初始元素
+    cout << arr[5] << endl;
+    for (int i = 0; i < 5; i++)
+        cout << arr[i] << endl;
+}
+```
+
+总结1： 数组名的命名规范 不要与变量重名
+
+总结2：数组中的下标是从0开始的索引的
+
+#### 5.1.2一维数组 数组名
+
+一维数组数组名的用途：
+
+1 可以统计整个数组再内存中的**长度**  sizeof(arr)
+
+2 可以获取数组在内存中的**首地址 **  
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    //数组名用途
+    //1、整个数组内存大小
+    int arr[10] = {10, 20, 30, 40, 50, 60, 70, 80, 90};
+    //整型占4个内存空间
+    cout << "整个数组所占的内存空间 ：" << sizeof(arr) << endl;
+    cout << "每个元素所占的内存空间：" << sizeof(arr[0]) << endl;
+    cout << "数组中元素的个数为：" << sizeof(arr) / sizeof(arr[0]) << endl;
+    //总内存空间/每个元素所占内存空间 = 元素个数
+
+    //2、通过数组名查首地址
+    cout << "数组的首地址为 ：" << (int)arr << endl; //一般是16进制显示 可以换
+    cout << "数组中第一个元素的地址为：" << (int)&arr[0] << endl;
+     cout << "数组中第二个元素的地址为：" << (int)&arr[1] << endl;
+    system("pause");
+
+    return 0;
+}
+```
+
+数组名是一个常量 不可以进行赋值操作 
+
+##### 案例 五只小猪称体重
+
+本质 找到数组的最大值
+
+```c++
+#include <iostream>
+using namespace std;
+int main()
+{
+    // 创建五只小猪体重的数组
+    //从数组中扎到最大值
+    //打印最大值
+    //
+    int arr[5] = {300, 350, 200, 400, 250};
+    // 找最大值 认定一个最大值max 依次访问每个元素如果该元素大于max则更新max
+    int max = 0;
+    //如果我访问的数组中的元素比我认定的最大值还要大 那么将这个值赋给max 即更新最大值
+    for (int i = 0; i < 5; i++)
+    {
+        if (arr[i] > max)
+        {
+            max = arr[i];
+        }
+
+        //cout << arr[i] << endl;
+    }
+    cout << "最大值为 ：" << max << endl;
+
+    return 0;
+}
+```
+
+案例 数组元素逆置
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    //创建一个数组
+
+    
+    int arr[5] = {1, 3, 2, 5, 4};
+    cout << "逆置前：" << endl;
+    for (int i = 0; i < 5; i++)
+    {
+        cout << arr[i] << endl;
+    }
+    //实现逆置
+    //记录起始、结束下标的位置
+    int start = 0;
+    int end = sizeof(arr) / sizeof(arr[0]) - 1;
+    while (start < end) //循环执行 至 起始位置>=结束位置
+    {
+
+        //起始、结束 下标互换
+        int temp = arr[end]; // 创建一个临时的位置存放
+        arr[end] = arr[start];
+        arr[start] = temp;
+
+        //起始位置 ++ 结束位置 --
+        start++;
+        end--;
+    }
+    //输出
+    for (int j = 0; j < 5; j++)
+        cout << "逆置后：" << arr[j] << endl;
+}
+```
+
+#### 5.1.3 冒泡排序
+
+比较相邻的元素，第一个大于第二个就交换他们。
+
+循环一圈下来，可以找到最大值。
+
+重复 每次比较次数 -1 ，直到不需要比较。
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    //利用冒泡排序实现升序序列
+    int arr[] = {4, 2, 8, 0, 5, 7, 1, 3, 9};
+    cout << "排序前的结果" << endl;
+    for (int i = 0; i < 9; i++)
+    {
+        cout << arr[i] << "   ";
+    }
+    cout << endl;
+    //开始冒泡排序
+    //总共排序轮数
+    for (int i = 0; i < 9 - 1; i++) //总共排序轮数 元素个数 - 1
+    {
+        //内存循环对比 次数 = 元素个数 - 当前轮数 -1
+        for (int j = 0; j < 9 - i - 1; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+    cout << "排序后的结果 ：" << endl;
+    for (int i = 0; i < 9; i++)
+    {
+        cout << arr[i] << "   ";
+    }
+    cout << endl;
+}
+```
+
+### 5.2 二维数组
+
+#### 5.2.1二维数组定义方式
+
+数据类型 数组名 [行数] [列数];
+
+```c++
+#include <iostream>
+using namespace std;
+int main()
+{
+    int arr[2][3];
+    arr[0][0] = 1;
+    arr[0][1] = 2;
+    arr[0][2] = 3;
+    arr[1][0] = 4;
+    arr[1][1] = 5;
+    arr[1][2] = 6;
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            cout << arr[i][j] << endl;
+        }
+    }
+}
+```
+
+数据类型 数组名 [行数] [列数] = {  {数据1，数据2}，{数据3 ，数据4} } ；
+
+```c++
+#include <iostream>
+using namespace std;
+int main()
+{
+    int arr[2][3] =
+        {
+            {1, 2, 3},
+            {4, 5, 6}
+   	 	};
+
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            cout << arr[i][j];
+        }
+        cout << endl;
+    }
+}
+```
+
+数据类型 数组名 [行数] [列数]  =  { 数据1 ，数据2， 数据3 ，数据4 }；
+
+```c++
+#include <iostream>
+using namespace std;
+int main()
+{
+    int arr[2][3] = {1, 2, 3, 4, 5, 6};
+
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            cout << arr[i][j];
+        }
+        cout << endl;
+    }
+}
+```
+
+数据类型 数组名 [        ] [列数] = {数据1 ，数据2，数据3，数据4}；
+
+```c++
+#include <iostream>
+using namespace std;
+int main()
+{
+    int arr[][3] = {9, 0, 2, 3, 7, 9, 1, 2, 3, 4, 5, 6};
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            cout << arr[i][j];
+        }
+        cout << endl;
+    }
+}
+```
+
+#### 5.2.3二维数组名称
+
+```c++
+#include <iostream>
+using namespace std;
+int main()
+{
+    //可以查看所占用内存空间的大小
+    int arr[][3] = {3, 6, 7, 8, 9, 2};
+    cout << "该二维数组所占内存空间为：" << sizeof(arr) << endl;
+    cout << "二维数组第一行所占的内存空间为：" << sizeof(arr[0]) << endl;        //行
+    cout << "二维数组第一个元素所占的内存空间为：" << sizeof(arr[0][0]) << endl; //列
+
+    
+    cout << "二维数组行数为： " << sizeof(arr) / sizeof(arr[0]) << endl;
+    cout << "二维数组列数为： " << sizeof(arr[0]) / sizeof(arr[0][0]) << endl;
+
+    // 可以查看二维数组的首地址
+    cout << "二维数组的首地址为 ：" << arr << endl;
+    cout << "二维数组中第一行首地址为 ： " << arr[0] << endl;
+    cout << "二位数组中第二行首地址为 ： " << arr[1] << endl;
+    cout << "二维数组中第一个元素的首地址为 ： " << &arr[0][0] << endl; //是一个数 元素  要取地址符
+}
+```
+
+#### 5.2.4二维数组案例 —— 考试成绩统计
+
+```c++
+#include <iostream>
+using namespace std;
+int main()
+{
+    int scores[][3] = {100, 100, 100, 90, 50, 100, 60, 70, 80};
+    int sum = 0;
+    string name[3] = {"张三", "李四", "王五"};//定义三个字符串
+    // 统计每个人的综合分数
+    for (int i = 0; i < 3; i ++){
+        int sum = 0;
+        for (int j = 0; j < 3;j++){
+            // cout << scores[i][j] <<"  ";
+            sum += scores[i][j];
+        }
+        // cout << "第 " << i + 1 << " 个人的总分为 ； " << sum << endl;
+        cout  << name[i] << " 的总分为 ； " << sum << endl;//在第一层 循环里面输出 i
+    }
+        system("pause");
+    return 0;
+
+}
 
 
 
+//张三 的总分为 ； 300
+//李四 的总分为 ； 240
+//王五 的总分为 ； 210
+```
 
+## 6 函数
 
+将一段经常使用的代码封装起来，减少重复代码。将一个大程序等成若干程序快每个模块实现特定的功能。
 
+### 6.1函数的定义 步骤  
 
+1、返回值类型 一个函数可以返回一个值 在函数定义中
 
+2、函数名 给函数起个名
 
+3、参数列表  使用该函数时 传入的数据
 
+4、函数体语句花括号内 函数内需要执行的代码
 
+5、return 表达式  和返回值挂钩 函数执行完后返回相应的数据
+
+### 6.2语法 
+
+```
+返回值类型 函数值 (参数列表)
+{
+    函数体语句
+     
+     return 表达式
+}
+```
+
+```c++
+#include <iostream>
+using namespace std;
+    //加法
+    //返回值类型 整型  int
+    //函数名 add
+    //参数列表  (int num1 int num2)
+    //函数体语句  int sum = num1 + num2;
+    //return 表达式  return sum;
+int add (int num1,int num2) //函数定义的时候 num1 num2 都没有真实的数据，形式参数  形参 
+        {
+            int sum = num1 + num2;
+            return sum;
+        }
+int main()
+{
+    //main函数中调用add函数
+    int a = 10;
+    int b = 20;
+    //函数调用语法： 函数名称（参数）
+    //add(a, b);
+    //a, b 称为实际参数 简称 实参 
+    //当调用函数时 实参的值会传递
+    int c = add(a, b);
+    cout << " c = " << c << endl;
+    
+    system("pause");
+    return 0;
+
+}
+```
+
+### 6.3值传递
+
+```c++
+#include <iostream>
+using namespace std;
+   //值传递
+   //定义函数 实现两个个数字进行交换函数
+   //如果函数不需要返回值 声明的时候可以写一个 void
+void swap (int num1,int num2){
+       cout << "交换前 " << endl;
+       cout <<"num1 = " << num1 << endl;
+       cout <<"num2 = " << num2 << endl;
+       int temp = num1;
+       num1 = num2;
+       num2 = temp;
+       cout << "交换后 " << endl;
+       cout <<"num1 = " << num1 << endl;
+       cout <<"num2 = " << num2 << endl;
+
+       return;//返回值不需要的时候可以不写 或者只写一个return
+   }
+int main()
+{
+
+    int a = 10;
+    int b = 20;
+    cout << " a = " << a << endl;
+    cout << " b = " << b << endl;
+    //当我们做值传递的时候  函数的形参发生改变不会影响实参 
+    swap(a, b);
+     cout << " b = " << b << endl;
+    cout << " a = " << a << endl;
+    //虽然交换前后num1 num2 发生改变但是 a,b 不发生改变
+       
+    system("pause");
+    return 0;
+
+}
+```
+
+### 6.4 函数的常见样式
+
+1、无参无返
+
+2、有参无返
+
+3、无参有返
+
+4、有参有返
+
+```c++
+#include <iostream>
+using namespace std;
+// 无参无返
+void test01()
+{
+    cout << " this is test01" << endl;
+}
+//有参无返
+void test02(int a)
+{
+    cout << " this is test02 a = " << a <<endl;
+}
+//无参有返
+int test03()
+{
+    cout << " this is test03" << endl;
+    return 1000;
+}
+//有参有返
+int test04(int b)
+{
+    cout << " this is test04 b = " << b << endl;
+    return b;
+}
+int main()
+{
+        //无参无返调用
+        test01();
+        //有参无返调用
+        test02(100);
+        //无参有返调用
+        int num1 = test03(); //返回值1000
+        cout << "num1 = " << num1 << endl;
+        //有参有返调用
+        int num2 = test04(10000);
+        cout<< "num2 = " << num2 << endl;
+
+        system("pause");
+        return 0;
+}
+```
+
+### 6.5 函数的声明
+
+告诉编译器函数名称以及如何调用函数 函数的实际主题可以单独定义
+
+函数的生命可以多次但函数的定义只能有一次
+
+```c++
+#include <iostream>
+using namespace std;
+//函数的声明
+//比较函数，实现两个阵发性数字进行比较返回较大的值
+
+//定义
+int max(int a ,int b )
+{
+    return a > b ? a : b;
+}
+int main()
+{
+    int a = 10;
+    int b = 20;
+
+    cout << max(a, b) << endl;
+
+    system("pause");
+    return 0;
+}
+```
+
+```c++
+#include <iostream>
+using namespace std;
+//函数的声明
+//比较函数，实现两个阵发性数字进行比较返回较大的值
+
+//提前告诉编译器函数的存在，可以利用函数的声明
+//函数的声明
+int max(int a, int b);//无具体的代码实现 只有 返回值类型 函数名和形参列表
+
+//！！！！！ 函数的声明多次 但函数的定义只有一次 声明的后面都可以放定义
+//函数在main函数之前可以不用声明 但是在main之后必须要声明
+
+int main()
+{
+    int a = 10;
+    int b = 20;
+
+    cout << max(a, b) << endl;
+
+    system("pause");
+    return 0;
+}
+//定义
+int max(int a ,int b )
+{
+    return a > b ? a : b;
+}
+```
+
+6.6 函数的分文件编写
+
+让代码的结构更加清晰
+
+函数分文件编写步骤
+
+1、创建后缀名为 .h 的头文件
+
+2、创建后缀名为 .cpp的源文件
+
+3、在头文件中写函数的声明
+
+4、在源文件中写函数的定义
 
 
 
